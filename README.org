@@ -1,0 +1,26 @@
+#+TITLE: Server-side events for XState
+
+How to run:
+
+1. [[https://redis.io/docs/install/install-stack/][Install Redis]] and start the Redis server (~redis-server~)
+2. Install dependencies and run the web service:
+   #+begin_src sh
+     pip install .
+     python -m flask --app server run
+   #+end_src
+3. Calling the url http://127.0.0.1:5000/send will fire the "caramba"
+   event.
+4. You can catch the event in your web application in the following
+   way. You catch the event and send it to your actor (state machine).
+   #+begin_src js
+   let source = new EventSource("http://127.0.0.1:5000/stream")
+   source.addEventListener('caramba', function(event) {
+     dmActor.send({ type: "CARAMBA" });
+   }, false);
+   #+end_src
+   
+
+
+More info:
+- https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+- https://pypi.org/project/Flask-SSE/1.0.0/
